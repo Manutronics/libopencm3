@@ -1,8 +1,13 @@
 README
 ======
-[![Build Status](https://travis-ci.org/libopencm3/libopencm3.svg?branch=master)](https://travis-ci.org/libopencm3/libopencm3)
+######## WARNING:THIS LIBOPENCM3 FORK USES CMAKE AS BUILD SYSTEM ##########
 
-[![Gitter channel](https://badges.gitter.im/libopencm3/discuss.svg)](https://gitter.im/libopencm3/discuss)
+This fork were taken because I had many files that the original libopencm3 git don't have. I will work on them in whenever I'll have time to verify the code written by me. The code committed here are provided "as is" and without any warranty. For more information see the terms of the GNU Lesser General Public License as published by the Free Software Foundation. As well as the code here complies with the commitment of being written from scratch based no the vendor documentation.
+When I'll feel confident to make a pull request, I supposed to do so.
+
+The original repo is in https://github.com/libopencm3/libopencm3
+
+###########################################################################
 
 The libopencm3 project aims to create an open-source firmware library for
 various ARM Cortex-M microcontrollers.
@@ -93,94 +98,11 @@ to build all platforms covered by libopencm3 successfully.
 Building
 --------
 
+    $ mkdir build
+    $ cd build
+    $ cmake .. -G'MSYS Makefiles' -DCMAKE_BUILD_TYPE=<Debug or Release> -DDEVICES=<devices to build the "libopencm3_<device>.a">
+
     $ make
-
-If you have an arm-elf toolchain (uncommon) you may want to override the
-toolchain prefix (arm-none-eabi is the default)
-
-    $ PREFIX=arm-elf make
-
-For a more verbose build you can use
-
-    $ make V=1
-
-You can reduce the build time by specifying a particular MCU series
-
-    $ make TARGETS='stm32/f1 stm32/f4'
-
-Supported targets can be listed using:
-
-    $ make list-targets
-
-Fine-tuning the build
----------------------
-
-The build may be fine-tuned with a limited number of parameters, by specifying
-them as environment variables, for example:
-
-    $ VARIABLE=value make
-
-* `FP_FLAGS` - Control the floating-point ABI
-
-   If the Cortex-M core supports a hard float ABI, it will be compiled with
-   the best floating-point support by default. In cases where this is not desired, the
-   behavior can be specified by setting `FP_FLAGS`.
-
-   Currently, M4F cores default to `-mfloat-abi=hard -mfpu=fpv4-sp-d16`, and
-   M7 cores defaults to double precision `-mfloat-abi=hard -mfpu=fpv5-d16` if available,
-   and single precision `-mfloat-abi=hard -mfpu=fpv5-sp-d16` otherwise.
-   Other architectures use no FP flags, in otherwords, traditional softfp.
-
-   You may find which FP_FLAGS you can use in a particular architecture in the readme.txt
-   file shipped with the gcc-arm-embedded package.
-
-   Examples:
-
-        $ FP_FLAGS="-mfloat-abi=soft" make               # No hardfloat
-        $ FP_FLAGS="-mfloat-abi=hard -mfpu=magic" make   # New FPU we don't know of
-
-* `CFLAGS` - Add to or supersede compiler flags
-
-   If the library needs to be compiled with additional flags, they can be
-   passed to the build system via the environment variable `CFLAGS`. The
-   contents of `CFLAGS` will be placed after all flags defined by the build
-   system, giving the user a way to override any default if necessary.
-
-   Examples:
-
-        $ CFLAGS="-fshort-wchar" make    # Compile lib with 2 byte wide wchar_t
-
-Example projects
-----------------
-
-The libopencm3 community has written and is maintaining a huge collection of
-examples, displaying the capabilities and uses of the library. You can find all
-of them in the libopencm3-examples repository:
-
-https://github.com/libopencm3/libopencm3-examples
-
-If you just wish to test your toolchain and build environment, a collection of
-mini blink projects is available too.  This covers _many_ more boards, but, as
-the name suggests, only demonstrates blinking LEDs.
-
-
-https://github.com/libopencm3/libopencm3-miniblink
-
-Installation
-------------
-
-Simply pass -I and -L flags to your own project.  See the
-[libopencm3-template](https://github.com/libopencm3/libopencm3-template)
-repository for a template repository using this library as a Git submodule,
-the most popular method of use.  The libopencm3-examples is another
-example of this.
-
-It is strongly advised that you do not attempt to install this library to any
-path inside your toolchain itself.  While this means you don't have to include
-any `-I` or `-L` flags in your projects, it is _very_ easy to confuse a multi-library
-linker from picking the right versions of libraries.  Common symptoms are
-hardfaults caused by branches into ARM code.  You can use `arm-none-eabi-objdump`
-to check for this in your final ELF file.  You have been warned.
 
 Coding style and development guidelines
 ---------------------------------------
