@@ -234,7 +234,7 @@
 /* UART Line status bit mask */
 #define UART_LSR_BITMASK                ((uint8_t)(0xFF))
 #define UART_LSR_ERROR_MASK \
-	(UART_LSR_OE | UART_LSR_PE | UART_LSR_FE | UART_LSR_BI | UART_LSR_RXFE)
+    (UART_LSR_OE | UART_LSR_PE | UART_LSR_FE | UART_LSR_BI | UART_LSR_RXFE)
 
 /**********************************************************************
 * Macro defines for Macro defines for UART Scratch Pad Register
@@ -347,55 +347,55 @@
 * UART Databit type definitions
 */
 typedef enum {
-	UART_DATABIT_5 = UART_LCR_WLEN5,/* UART 5 bit data mode */
-	UART_DATABIT_6 = UART_LCR_WLEN6,/* UART 6 bit data mode */
-	UART_DATABIT_7 = UART_LCR_WLEN7,/* UART 7 bit data mode */
-	UART_DATABIT_8 = UART_LCR_WLEN8/* UART 8 bit data mode */
+    UART_DATABIT_5 = UART_LCR_WLEN5,/* UART 5 bit data mode */
+    UART_DATABIT_6 = UART_LCR_WLEN6,/* UART 6 bit data mode */
+    UART_DATABIT_7 = UART_LCR_WLEN7,/* UART 7 bit data mode */
+    UART_DATABIT_8 = UART_LCR_WLEN8/* UART 8 bit data mode */
 } uart_databit_t;
 
 /*
 * UART Stop bit type definitions
 */
 typedef enum {
-	/* UART 1 Stop Bits Select */
-	UART_STOPBIT_1 = UART_LCR_ONE_STOPBIT,
-	/* UART 2 Stop Bits Select */
-	UART_STOPBIT_2 = UART_LCR_TWO_STOPBIT
+    /* UART 1 Stop Bits Select */
+    UART_STOPBIT_1 = UART_LCR_ONE_STOPBIT,
+    /* UART 2 Stop Bits Select */
+    UART_STOPBIT_2 = UART_LCR_TWO_STOPBIT
 } uart_stopbit_t;
 
 /*
 * UART Parity type definitions
 */
 typedef enum {
-	/* No parity */
-	UART_PARITY_NONE = UART_LCR_NO_PARITY,
-	/* Odd parity */
-	UART_PARITY_ODD = (UART_LCR_PARITY_ODD | UART_LCR_PARITY_EN),
-	/* Even parity */
-	UART_PARITY_EVEN = (UART_LCR_PARITY_EVEN | UART_LCR_PARITY_EN),
-	/* Forced 1 stick parity */
-	UART_PARITY_SP_1 = (UART_LCR_PARITY_SP_1 | UART_LCR_PARITY_EN),
-	/* Forced 0 stick parity */
-	UART_PARITY_SP_0  = (UART_LCR_PARITY_SP_0 | UART_LCR_PARITY_EN)
+    /* No parity */
+    UART_PARITY_NONE = UART_LCR_NO_PARITY,
+    /* Odd parity */
+    UART_PARITY_ODD = (UART_LCR_PARITY_ODD | UART_LCR_PARITY_EN),
+    /* Even parity */
+    UART_PARITY_EVEN = (UART_LCR_PARITY_EVEN | UART_LCR_PARITY_EN),
+    /* Forced 1 stick parity */
+    UART_PARITY_SP_1 = (UART_LCR_PARITY_SP_1 | UART_LCR_PARITY_EN),
+    /* Forced 0 stick parity */
+    UART_PARITY_SP_0  = (UART_LCR_PARITY_SP_0 | UART_LCR_PARITY_EN)
 } uart_parity_t;
 
 typedef enum {
-	UART0_NUM = UART0,
-	UART1_NUM = UART1,
-	UART2_NUM = UART2,
-	UART3_NUM = UART3
+    UART0_NUM = UART0,
+    UART1_NUM = UART1,
+    UART2_NUM = UART2,
+    UART3_NUM = UART3
 } uart_num_t;
 
 typedef enum {
-	UART_NO_ERROR = 0,
-	UART_TIMEOUT_ERROR = 1, 
-	UART_CONIFG_ERROR
+    UART_NO_ERROR = 0,
+    UART_TIMEOUT_ERROR = 1, 
+    UART_CONIFG_ERROR
 } uart_error_t;
 
 typedef enum {
-	UART_RX_NO_DATA = 0,
-	UART_RX_DATA_READY = 1,
-	UART_RX_DATA_ERROR = 2
+    UART_RX_NO_DATA = 0,
+    UART_RX_DATA_READY = 1,
+    UART_RX_DATA_ERROR = 2
 } uart_rx_data_ready_t;
 
 /* function prototypes */
@@ -404,13 +404,13 @@ BEGIN_DECLS
 
 /* Init UART and set PLL1 as clock source (PCLK) */
 uart_error_t uart_init(uart_num_t uart_num, uart_databit_t data_nb_bits,
-	    			uart_stopbit_t data_nb_stop, uart_parity_t data_parity,
-	    			uint32_t baud_rate);
+                    uart_stopbit_t data_nb_stop, uart_parity_t data_parity,
+                    uint32_t baud_rate);
 
 uart_rx_data_ready_t uart_rx_data_ready(uart_num_t uart_num);
 uint8_t uart_read(uart_num_t uart_num);
 uint8_t uart_read_timeout(uart_num_t uart_num, uint32_t rx_timeout_nb_cycles,
-	    uart_error_t *error);
+                    uart_error_t *error);
 void uart_write(uart_num_t uart_num, uint8_t data);
 
 END_DECLS
