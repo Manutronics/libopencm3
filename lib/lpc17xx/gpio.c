@@ -28,11 +28,25 @@ LGPL License Terms @ref lgpl_license
  *
  * You should have received a copy of the GNU Lesser General Public License
  * along with this library.  If not, see <http://www.gnu.org/licenses/>.
+ * 
+ * Modified by manutronics to add functionalities to the library.
  */
 
 /**@{*/
 
 #include <libopencm3/lpc17xx/gpio.h>
+
+void gpio_set_mode(uint32_t gpioport, uint32_t gpios, gpio_mode_t mode)
+{
+	if(mode)
+	{
+		GPIO_DIR(gpioport) &= ~gpios;
+	}
+	else
+	{
+		GPIO_DIR(gpioport) |= gpios;
+	}
+}
 
 void gpio_set(uint32_t gpioport, uint32_t gpios)
 {
@@ -42,6 +56,11 @@ void gpio_set(uint32_t gpioport, uint32_t gpios)
 void gpio_clear(uint32_t gpioport, uint32_t gpios)
 {
 	GPIO_CLR(gpioport) = gpios;
+}
+
+uint32_t gpio_get(uint32_t gpioport, uint32_t gpios)
+{
+	return GPIO_PIN(gpioport)&gpios;
 }
 
 /**@}*/

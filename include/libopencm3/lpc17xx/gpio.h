@@ -29,6 +29,8 @@ LGPL License Terms @ref lgpl_license
  *
  * You should have received a copy of the GNU Lesser General Public License
  * along with this library.  If not, see <http://www.gnu.org/licenses/>.
+ * 
+ * Modified by manutronics to add functionalities to the library.
  */
 
 #ifndef LPC17XX_GPIO_H
@@ -148,10 +150,18 @@ LGPL License Terms @ref lgpl_license
 /* Overall interrupt status */
 #define GPIO_IS                         MMIO32(GPIOINTERRUPT_BASE + 0x80)
 
+typedef enum{
+    GPIO_OUTPUT,
+    GPIO_INPUT
+} gpio_mode_t;
+
 BEGIN_DECLS
 
+void gpio_set_mode(uint32_t gpioport, uint32_t gpios, gpio_mode_t mode);
 void gpio_set(uint32_t gpioport, uint32_t gpios);
 void gpio_clear(uint32_t gpioport, uint32_t gpios);
+void gpio_toggle(uint32_t gpioport, uint32_t gpios);
+uint32_t gpio_get(uint32_t gpioport, uint32_t gpios);
 
 END_DECLS
 
