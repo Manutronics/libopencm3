@@ -29,6 +29,29 @@ LGPL License Terms @ref lgpl_license
  *
  * You should have received a copy of the GNU Lesser General Public License
  * along with this library.  If not, see <http://www.gnu.org/licenses/>.
+ * 
+ * This file was modified by manutronics with purpose of increase the usage of the 
+ * clock function of the lpc17xx inside libopencm3. Was based in a project from San
+ * Jose State University from Professor Preetpal Kang. f any advice in concern of use of this 
+ * content, please contact me in manutronics@gmail.com
+ * 
+ *     Copy of the copyright header
+ *     ---------------------------
+ *     SocialLedge.com - Copyright (C) 2013
+ *
+ *     This file is part of free software framework for embedded processors.
+ *     You can use it and/or distribute it as long as this copyright header
+ *     remains unmodified.  The code is free for personal use and requires
+ *     permission to use in a commercial product.
+ *
+ *      THIS SOFTWARE IS PROVIDED "AS IS".  NO WARRANTIES, WHETHER EXPRESS, IMPLIED
+ *      OR STATUTORY, INCLUDING, BUT NOT LIMITED TO, IMPLIED WARRANTIES OF
+ *      MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE APPLY TO THIS SOFTWARE.
+ *      I SHALL NOT, IN ANY CIRCUMSTANCES, BE LIABLE FOR SPECIAL, INCIDENTAL, OR
+ *      CONSEQUENTIAL DAMAGES, FOR ANY REASON WHATSOEVER.
+ *
+ *     You can reach the author of this software at :
+ *          p r e e t . w i k i @ g m a i l . c o m
  */
 
 #ifndef LPC17XX_CLOCK_H
@@ -37,23 +60,27 @@ LGPL License Terms @ref lgpl_license
 #include <libopencm3/lpc17xx/memorymap.h>
 #include <libopencm3/cm3/common.h>
 
+#define IRC_OSC             4000000UL
+#define MAIN_OSC            12000000UL
+#define RTC_OSC             32768UL
+
 /* --- Clock registers ----------------------------------------------------- */
 /* System Control and Status */
-#define CLK_SCS				MMIO32(SYSCON_BASE + 0x1a0)
+#define CLK_SCS				    MMIO32(SYSCON_BASE + 0x1a0)
 /* Clock Source Selection */
 #define CLK_CLKSRCSEL			MMIO32(SYSCON_BASE + 0x10c)
 /* PLL0: Main */
-#define CLK_PLL0CON			MMIO32(SYSCON_BASE + 0x080)
-#define CLK_PLL0CFG			MMIO32(SYSCON_BASE + 0x084)
+#define CLK_PLL0CON			    MMIO32(SYSCON_BASE + 0x080)
+#define CLK_PLL0CFG			    MMIO32(SYSCON_BASE + 0x084)
 #define CLK_PLL0STAT			MMIO32(SYSCON_BASE + 0x088)
 #define CLK_PLL0FEED			MMIO32(SYSCON_BASE + 0x08c)
 /* PLL1: USB */
-#define CLK_PLL1CON			MMIO32(SYSCON_BASE + 0x0a0)
-#define CLK_PLL1CFG			MMIO32(SYSCON_BASE + 0x0a4)
+#define CLK_PLL1CON			    MMIO32(SYSCON_BASE + 0x0a0)
+#define CLK_PLL1CFG			    MMIO32(SYSCON_BASE + 0x0a4)
 #define CLK_PLL1STAT			MMIO32(SYSCON_BASE + 0x0a8)
 #define CLK_PLL1FEED			MMIO32(SYSCON_BASE + 0x0ac)
 /* Clock Dividers */
-#define CLK_CCLKCFG			MMIO32(SYSCON_BASE + 0x104)
+#define CLK_CCLKCFG			    MMIO32(SYSCON_BASE + 0x104)
 #define CLK_USBCLKCFG			MMIO32(SYSCON_BASE + 0x108)
 #define CLK_PCLKSEL0			MMIO32(SYSCON_BASE + 0x1a8)
 #define CLK_PCLKSEL1			MMIO32(SYSCON_BASE + 0x1ac)
@@ -88,7 +115,7 @@ LGPL License Terms @ref lgpl_license
 #define CLK_PLL0_NSEL_MASK		0xff
 /* CFG Reserved: [31:24] */
 #define CLK_PLL0STAT_ENABLE		(1 << 24)
-#define CLK_PLL0STAT_CONNECT		(1 << 25)
+#define CLK_PLL0STAT_CONNECT	(1 << 25)
 #define CLK_PLL0STAT_PLOCK		(1 << 26)
 /* STAT Reserved: [31:27] */
 
@@ -99,7 +126,7 @@ LGPL License Terms @ref lgpl_license
 #define CLK_PLL1_PSEL_MASK		0x3
 /* CFG Reserved: [31:7] */
 #define CLK_PLL1STAT_ENABLE		(1 << 8)
-#define CLK_PLL1STAT_CONNECT		(1 << 9)
+#define CLK_PLL1STAT_CONNECT	(1 << 9)
 #define CLK_PLL1STAT_PLOCK		(1 << 10)
 /* STAT Reserved: [31:11] */
 
@@ -119,27 +146,27 @@ LGPL License Terms @ref lgpl_license
 #define CLK_PCLKSEL0_UART0_SHIFT	6
 #define CLK_PCLKSEL0_UART1_SHIFT	8
 /* Reserved: [11:10]*/
-#define CLK_PCLKSEL0_PWM1_SHIFT	12
-#define CLK_PCLKSEL0_I2C0_SHIFT	14
+#define CLK_PCLKSEL0_PWM1_SHIFT	    12
+#define CLK_PCLKSEL0_I2C0_SHIFT	    14
 #define CLK_PCLKSEL0_SPI_SHIFT		16
 /* Reserved: [19:18]*/
-#define CLK_PCLKSEL0_SSP1_SHIFT	20
+#define CLK_PCLKSEL0_SSP1_SHIFT	    20
 #define CLK_PCLKSEL0_DAC_SHIFT		22
 #define CLK_PCLKSEL0_ADC_SHIFT		24
-#define CLK_PCLKSEL0_CAN1_SHIFT	26
-#define CLK_PCLKSEL0_CAN2_SHIFT	28
+#define CLK_PCLKSEL0_CAN1_SHIFT	    26
+#define CLK_PCLKSEL0_CAN2_SHIFT	    28
 #define CLK_PCLKSEL0_ACF_SHIFT		30
 #define CLK_PCLKSEL1_QEI_SHIFT		0
 #define CLK_PCLKSEL1_GPIOINT_SHIFT	2
 #define CLK_PCLKSEL1_PCB_SHIFT		4
-#define CLK_PCLKSEL1_I2C1_SHIFT	6
+#define CLK_PCLKSEL1_I2C1_SHIFT	    6
 /* Reserved: [9:8]*/
-#define CLK_PCLKSEL1_SSP0_SHIFT	10
+#define CLK_PCLKSEL1_SSP0_SHIFT	    10
 #define CLK_PCLKSEL1_TIMER2_SHIFT	12
 #define CLK_PCLKSEL1_TIMER3_SHIFT	14
 #define CLK_PCLKSEL1_UART2_SHIFT	16
 #define CLK_PCLKSEL1_UART3_SHIFT	18
-#define CLK_PCLKSEL1_I2C2_SHIFT	20
+#define CLK_PCLKSEL1_I2C2_SHIFT	    20
 #define CLK_PCLKSEL1_I2S_SHIFT		22
 /* Reserved: [25:24]*/
 #define CLK_PCLKSEL1_RIT_SHIFT		26
@@ -152,9 +179,18 @@ LGPL License Terms @ref lgpl_license
 #define CLK_CLKOUTCFG_SEL_IRC		0x02
 #define CLK_CLKOUTCFG_SEL_USB		0x03
 #define CLK_CLKOUTCFG_SEL_RTC		0x04
-#define CLK_CLKOUTCFG_DIV_SHIFT	4
+#define CLK_CLKOUTCFG_DIV_SHIFT	    4
 #define CLK_CLKOUTCFG_ENABLE		(1 << 8)
 #define CLK_CLKOUTCFG_ACTIVITY		(1 << 9)
 /* Reserved: [31:10]*/
+
+/* function prototypes */
+
+BEGIN_DECLS
+
+uint32_t clock_get_cpu_speed(void);
+void sysclock_setup(void);
+
+END_DECLS
 
 #endif
